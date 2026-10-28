@@ -1,0 +1,3 @@
+[submodule "elan32"]
+	path = elan32
+	url = https://github.com/jfievet/elan32.git
