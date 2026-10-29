@@ -38,6 +38,11 @@ LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common" /  "src" / "rams_s
 LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common" /  "src" / "axi_slave_reg_bank.vhd")
 LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common" /  "src" / "axi_slave_reg_bank_pkg.vhd")
 LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common" /  "src" / "time_elapsed.vhd")
+LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common"/ "src" / "trng_entropy_source.vhd")
+LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common"/ "src" / "trng_prbs32.vhd")
+LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common"/ "src" / "trng_random_generator.vhd")
+LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common"/ "src" / "trng_ring_oscillator.vhd")
+LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common"/ "src" / "axi_trng.vhd")
 LIB.add_source_files( ROOT / "riscv_soc_shell" /  "src" / "timestamp_pkg.vhd")
 LIB.add_source_files( ROOT / "src" / "riscv_wrapper.vhd")
 

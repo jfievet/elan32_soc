@@ -155,6 +155,7 @@ nco_pro : process (clk_main, rst_main)
     --------------------------------------------------------
     soc_inst : entity work.soc
         generic map (
+            G_SIM              => FALSE,
             USE_ASYNC_RESET    => USE_ASYNC_RESET,
             USE_SYNC_RESET     => USE_SYNC_RESET,
             ASYNC_RESET_ACTIVE => ASYNC_RESET_ACTIVE,

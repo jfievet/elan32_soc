@@ -117,6 +117,11 @@ set_global_assignment -name VHDL_FILE ../../../riscv_soc_shell/rtl_common/src/ax
 set_global_assignment -name VHDL_FILE ../../../riscv_soc_shell/rtl_common/src/axi_gpio.vhd
 set_global_assignment -name VHDL_FILE ../../../riscv_soc_shell/rtl_common/src/axi_fifo.vhd
 set_global_assignment -name VHDL_FILE ../../../riscv_soc_shell/rtl_common/src/time_elapsed.vhd
+set_global_assignment -name VHDL_FILE ../../../riscv_soc_shell/rtl_common/src/trng_entropy_source.vhd
+set_global_assignment -name VHDL_FILE ../../../riscv_soc_shell/rtl_common/src/trng_prbs32.vhd
+set_global_assignment -name VHDL_FILE ../../../riscv_soc_shell/rtl_common/src/trng_random_generator.vhd
+set_global_assignment -name VHDL_FILE ../../../riscv_soc_shell/rtl_common/src/trng_ring_oscillator.vhd
+set_global_assignment -name VHDL_FILE ../../../riscv_soc_shell/rtl_common/src/axi_trng.vhd
 set_global_assignment -name VHDL_FILE ../../../riscv_soc_shell/src/timestamp_pkg.vhd
 set_global_assignment -name VHDL_FILE ../../../riscv_soc_shell/src/soc.vhd
 set_global_assignment -name VHDL_FILE ../../../riscv_soc_shell/src/rams_sp_wf_pkg.vhd
