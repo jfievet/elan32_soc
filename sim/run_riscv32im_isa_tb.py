@@ -43,6 +43,8 @@ LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common"/ "src" / "trng_prb
 LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common"/ "src" / "trng_random_generator.vhd")
 LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common"/ "src" / "trng_ring_oscillator.vhd")
 LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common"/ "src" / "axi_trng.vhd")
+LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common"/ "src" / "sdram_controller.vhd")
+LIB.add_source_files( ROOT / "riscv_soc_shell" / "rtl_common"/ "src" / "axi_lite_sdram.vhd")
 LIB.add_source_files( ROOT / "riscv_soc_shell" /  "src" / "timestamp_pkg.vhd")
 LIB.add_source_files( ROOT / "src" / "riscv_wrapper.vhd")
 

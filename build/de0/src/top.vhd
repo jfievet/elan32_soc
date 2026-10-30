@@ -19,14 +19,27 @@ use IEEE.numeric_std.all;
 entity top is
     generic (
         simu   : integer := 0;
-        target : integer := 0 -- 0: altera, 1: xilinx
+        target : integer := 0; -- 0: altera, 1: xilinx
+        sdram  : boolean := TRUE -- works with de0 sdram
     );
     port (
         CLOCK_50  : in std_logic;
         SW        : in std_logic_vector(9 downto 0);
         LEDG      : out std_logic_vector(9 downto 0);
         GPIO0_D_1 : in std_logic; --uart rx
-        GPIO0_D_0 : out std_logic --uart tx           
+        GPIO0_D_0 : out std_logic; --uart tx           
+        DRAM_DQ    : inout std_logic_vector(15 downto 0);
+        DRAM_ADDR  : out std_logic_vector(12 downto 0);
+        DRAM_LDQM  : out std_logic;
+        DRAM_UDQM  : out std_logic;
+        DRAM_WE_N  : out std_logic;
+        DRAM_CAS_N : out std_logic;
+        DRAM_RAS_N : out std_logic;
+        DRAM_CS_N  : out std_logic;
+        DRAM_BA_0  : out std_logic;
+        DRAM_BA_1  : out std_logic;
+        DRAM_CLK   : out std_logic;
+        DRAM_CKE   : out std_logic
     );
 end entity top;
 
@@ -95,6 +108,19 @@ architecture rtl of top is
     signal soc_pc_debug          : std_logic_vector(31 downto 0);
     signal soc_previous_pc_debug : std_logic_vector(31 downto 0);
 
+    -- SDRAM
+    signal sdram_ba  : std_logic_vector(1 downto 0);
+    signal sdram_dqm : std_logic_vector(1 downto 0);
+    signal sdram_cke_int   : std_logic;
+    signal sdram_cs_n_int  : std_logic;
+    signal sdram_ras_n_int : std_logic;
+    signal sdram_cas_n_int : std_logic;
+    signal sdram_we_n_int  : std_logic;
+    signal sdram_ba_int    : std_logic_vector(1 downto 0);
+    signal sdram_addr_int  : std_logic_vector(11 downto 0);
+    signal sdram_dqm_int   : std_logic_vector(1 downto 0);
+    signal sdram_dq_int    : std_logic_vector(15 downto 0);
+
     --------------------------------------------------------
     -- Misc signals
     --------------------------------------------------------
@@ -155,13 +181,14 @@ nco_pro : process (clk_main, rst_main)
     --------------------------------------------------------
     soc_inst : entity work.soc
         generic map (
-            G_SIM              => FALSE,
-            USE_ASYNC_RESET    => USE_ASYNC_RESET,
-            USE_SYNC_RESET     => USE_SYNC_RESET,
-            ASYNC_RESET_ACTIVE => ASYNC_RESET_ACTIVE,
-            SYNC_RESET_ACTIVE  => SYNC_RESET_ACTIVE,
-            G_SYS_FREQ => clock_frequency,
-            G_BAUDRATE => uart_baudrate
+            G_ENABLE_SDRAM      => sdram,
+            G_SIM               => FALSE,
+            USE_ASYNC_RESET     => USE_ASYNC_RESET,
+            USE_SYNC_RESET      => USE_SYNC_RESET,
+            ASYNC_RESET_ACTIVE  => ASYNC_RESET_ACTIVE,
+            SYNC_RESET_ACTIVE   => SYNC_RESET_ACTIVE,
+            G_SYS_FREQ          => clock_frequency,
+            G_BAUDRATE          => uart_baudrate
         )
         port map (
             -- Clock and reset
@@ -212,8 +239,39 @@ nco_pro : process (clk_main, rst_main)
             ext_axi_rvalid  => top_axi_rvalid,
             ext_axi_rready  => top_axi_rready,
             ext_axi_rdata   => top_axi_rdata,
-            ext_axi_rresp   => top_axi_rresp
+            ext_axi_rresp   => top_axi_rresp,
+
+            -- SDRAM
+            sdram_cke   => sdram_cke_int,
+            sdram_cs_n  => sdram_cs_n_int,
+            sdram_ras_n => sdram_ras_n_int,
+            sdram_cas_n => sdram_cas_n_int,
+            sdram_we_n  => sdram_we_n_int,
+            sdram_ba    => sdram_ba_int,
+            sdram_addr  => sdram_addr_int,
+            sdram_dqm   => sdram_dqm_int,
+            sdram_dq    => DRAM_DQ
         );
+
+    --------------------------------------------------------
+    -- SDRAM
+    --------------------------------------------------------
+    DRAM_CKE   <= sdram_cke_int   when sdram else '0';
+    DRAM_CS_N  <= sdram_cs_n_int  when sdram else '1';
+    DRAM_RAS_N <= sdram_ras_n_int when sdram else '1';
+    DRAM_CAS_N <= sdram_cas_n_int when sdram else '1';
+    DRAM_WE_N  <= sdram_we_n_int  when sdram else '1';
+
+    DRAM_BA_0  <= sdram_ba_int(0) when sdram else '0';
+    DRAM_BA_1  <= sdram_ba_int(1) when sdram else '0';
+
+    DRAM_ADDR(11 downto 0) <= sdram_addr_int when sdram else (others => '0');
+    DRAM_ADDR(12) <= '0';
+
+    DRAM_LDQM <= sdram_dqm_int(0) when sdram else '1';
+    DRAM_UDQM <= sdram_dqm_int(1) when sdram else '1';
+
+    DRAM_CLK <= clk_main when sdram else '0';
 
     --------------------------------------------------------
     -- SOC control
