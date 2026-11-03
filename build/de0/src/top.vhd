@@ -20,6 +20,7 @@ entity top is
     generic (
         simu   : integer := 0;
         target : integer := 0; -- 0: altera, 1: xilinx
+        trng   : boolean := TRUE
         sdram  : boolean := TRUE -- works with de0 sdram
     );
     port (
@@ -181,6 +182,7 @@ nco_pro : process (clk_main, rst_main)
     --------------------------------------------------------
     soc_inst : entity work.soc
         generic map (
+            G_ENABLE_TRNG       => trng,
             G_ENABLE_SDRAM      => sdram,
             G_SIM               => FALSE,
             USE_ASYNC_RESET     => USE_ASYNC_RESET,
