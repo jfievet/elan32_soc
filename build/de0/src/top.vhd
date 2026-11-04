@@ -20,7 +20,7 @@ entity top is
     generic (
         simu   : integer := 0;
         target : integer := 0; -- 0: altera, 1: xilinx
-        trng   : boolean := TRUE
+        trng   : boolean := TRUE;
         sdram  : boolean := TRUE -- works with de0 sdram
     );
     port (
