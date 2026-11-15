@@ -123,6 +123,13 @@ architecture rtl of top is
     signal sdram_dq_int    : std_logic_vector(15 downto 0);
 
     --------------------------------------------------------
+    -- GPIOs signals
+    --------------------------------------------------------
+
+    signal gpio_in  : std_logic_vector(31 downto 0);
+    signal gpio_out : std_logic_vector(31 downto 0);
+
+    --------------------------------------------------------
     -- Misc signals
     --------------------------------------------------------
     -- UART synchronization
@@ -252,8 +259,15 @@ nco_pro : process (clk_main, rst_main)
             sdram_ba    => sdram_ba_int,
             sdram_addr  => sdram_addr_int,
             sdram_dqm   => sdram_dqm_int,
-            sdram_dq    => DRAM_DQ
+            sdram_dq    => DRAM_DQ,
+
+            --GPIO
+            gpio_in  => gpio_in,
+            gpio_out => gpio_out
+
         );
+
+        gpio_in <= gpio_out;
 
     --------------------------------------------------------
     -- SDRAM
